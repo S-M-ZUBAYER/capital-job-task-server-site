@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const { query } = require('express');
 require('dotenv').config();
@@ -79,20 +78,12 @@ async function run() {
         //my orders
         app.get('/bookings', async (req, res) => {
             const email = req.query.email;
-            // const decodedEmail = req.decoded.email;
-            // if (email !== decodedEmail) {
-            //     return res.status(403).send({ message: 'forbidden access' })
-            // }
             const query = { email: email };
             const bookings = await bookingCollections.find(query).toArray();
             res.send(bookings);
         });
         app.get('/products/:email', async (req, res) => {
             const email = req.query.email;
-            // const decodedEmail = req.decoded.email;
-            // if (email !== decodedEmail) {
-            //     return res.status(403).send({ message: 'forbidden access' })
-            // }
             const query = { email: email };
             const myProducts = await productsCollections.find(query).toArray();
             res.send(myProducts);
@@ -121,10 +112,6 @@ async function run() {
         //my products
         app.get('/products', async (req, res) => {
             const email = req.query.email;
-            // const decodedEmail = req.decoded.email;
-            // if (email !== decodedEmail) {
-            //     return res.status(403).send({ message: 'forbidden access' })
-            // }
             const query = { email: email };
             const products = await productsCollections.find(query).toArray();
             res.send(products);
@@ -156,10 +143,6 @@ async function run() {
         //one user info
         app.get('/user', async (req, res) => {
             const email = req.query.email;
-            // const decodedEmail = req.decoded.email;
-            // if (email !== decodedEmail) {
-            //     return res.status(403).send({ message: 'forbidden access' })
-            // }
             const query = { email: email };
             const user = await usersCollections.findOne(query);
             res.send(user);
