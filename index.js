@@ -8,7 +8,6 @@ const port = process.env.PORT || 5000;
 
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
@@ -23,6 +22,7 @@ async function run() {
         const usersCollections = client.db('Cricket_Lover').collection('users');
         const paymentsCollection = client.db('Cricket_Lover').collection('payments');
 
+        //check for Is is connect or not
         console.log('database connected ')
 
         //users info
@@ -52,6 +52,7 @@ async function run() {
             const result = await productsCollections.updateOne(filter, updatedDoc, options);
             res.send(result);
         })
+
         app.put('/productBook/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
@@ -74,7 +75,6 @@ async function run() {
             res.send(products);
         })
 
-
         //my orders
         app.get('/bookings', async (req, res) => {
             const email = req.query.email;
@@ -82,6 +82,7 @@ async function run() {
             const bookings = await bookingCollections.find(query).toArray();
             res.send(bookings);
         });
+
         app.get('/products/:email', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
@@ -96,6 +97,7 @@ async function run() {
             const booking = await bookingCollections.findOne(query);
             res.send(booking);
         })
+
         app.put('/booking/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
@@ -117,7 +119,6 @@ async function run() {
             res.send(products);
         });
 
-
         // add product 
         app.post('/products', async (req, res) => {
             const user = req.body;
@@ -131,7 +132,6 @@ async function run() {
             const result = await bookingCollections.insertOne(user);
             res.send(result);
         });
-
 
         //all users
         app.get('/users', async (req, res) => {
@@ -148,7 +148,6 @@ async function run() {
             res.send(user);
         });
 
-
         // delete user
         app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
@@ -164,6 +163,7 @@ async function run() {
             const result = await productsCollections.deleteOne(filter);
             res.send(result)
         });
+
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email };
@@ -204,19 +204,20 @@ async function run() {
         })
 
         // admin role   verifyJWT, verifyAdmin,
-
         app.get('/users/admin/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email };
             const user = await usersCollections.findOne(query);
             res.send({ isAdmin: user?.role === 'admin' });
         })
+
         app.get('/users/buyer/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email };
             const user = await usersCollections.findOne(query);
             res.send({ isBuyer: user?.accountType === 'Buyer' });
         })
+
         app.get('/users/seller/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email };
